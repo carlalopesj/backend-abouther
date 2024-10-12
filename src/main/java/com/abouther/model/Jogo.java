@@ -8,15 +8,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name= "jogos")
+@Table(name= "jogo")
 public class Jogo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name= "idjogos")
+	@Column(name= "id_jogo")
 	private Integer id;
 	
-	@Column(name= "id_esportes")
+	@Column(name= "id_esporte")
 	private Integer esporteId;
 	
 	@Column(name= "data_jogo")
