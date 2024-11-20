@@ -32,6 +32,21 @@ public class UsuarioService {
         return usuarioNovo;
     }
 
+    public Usuario editarUsuario(Usuario usuario) {
+
+        Usuario usuarioExistente = dao.findById(usuario.getId()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        String encoder = this.passwordEncoder.encode(usuario.getSenha());
+        usuarioExistente.setSenha(encoder);
+        Usuario usuarioNovo = dao.save(usuarioExistente);
+        return usuarioNovo;
+    }
+
+    public Boolean deletarUsuario(Integer id) {
+        dao.deleteById(id);
+        return true;
+    }
+
     //@SuppressWarnings("deprecation")
     public Boolean validarSenha(Usuario usuarioEncontrado) {
         // Adicione logs para verificar as senhas

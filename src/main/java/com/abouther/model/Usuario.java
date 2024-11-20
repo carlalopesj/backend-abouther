@@ -15,7 +15,7 @@ public class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name= "id_usuario")
+	@Column(name= "idusuario")
 	private Integer id;
 	
 	@Email(message = "Insira um email válido!")
@@ -45,7 +45,5 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
 
 }

@@ -3,7 +3,6 @@ package com.abouther.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,9 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -49,6 +51,17 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> criarUsuario (@Valid @RequestBody Usuario usuario) {
 		return ResponseEntity.status(201).body(usuarioService.criarUsuario(usuario));
 	}
+
+	@PutMapping("/editar")
+	public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuario) {
+		return ResponseEntity.status(200).body(usuarioService.editarUsuario(usuario));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletarUsuario(@PathVariable Integer id) {
+		usuarioService.deletarUsuario(id);
+		return ResponseEntity.status(204).build();
+	}
 	
 	@PostMapping("/login")
 	public ResponseEntity<Usuario> login(@RequestBody Usuario usuario) {
@@ -62,6 +75,7 @@ public class UsuarioController {
 		// Verifique se o usuário foi encontrado e valide a senha
 		if (usuarioEncontrado != null && usuarioService.validarSenha(usuario)) {
 			System.out.println("Login!");
+			System.out.println("ID: " + usuarioEncontrado.getId());
 			return ResponseEntity.ok(usuarioEncontrado);
 		} else {
 			System.out.println("Sem login!");
@@ -69,19 +83,6 @@ public class UsuarioController {
 		}
 	}
 
-
-
-	/* 
-	@PostMapping("/login")
-	public ResponseEntity<Usuario> validarSenha(@Valid @RequestBody Usuario usuario) {
-		Boolean valid = usuarioService.validarSenha(usuario);
-		if (!valid) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		return ResponseEntity.status(200).build();
-	}
-	*/
-	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleValidationException(MethodArgumentNotValidException ex) {
